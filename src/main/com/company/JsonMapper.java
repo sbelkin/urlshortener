@@ -17,24 +17,21 @@ public class JsonMapper {
     JsonObject valueMapperLetter;
     Integer size;
 
-    public JsonMapper(String fileLocation) {
+    public JsonMapper(String fileLocation) throws IOException{
         File file = new File(fileLocation);
+        String content = new String(Files.readAllBytes(file.toPath()));
         size = 0;
-        valueMapperNumber = MapValues(file);
+        valueMapperNumber = MapValues(content);
         valueMapperLetter = ReverseMapValues(valueMapperNumber);
 
     }
 
-    public JsonObject MapValues(File file) {
-        try {
-            String content = new String(Files.readAllBytes(file.toPath()));
-            JsonParser parser = new JsonParser();
-            JsonObject valueMapper = parser.parse(content).getAsJsonObject();
-            return valueMapper;
-        } catch (IOException e){
-            e.printStackTrace();
-        }
-        return new JsonObject();
+
+
+    public JsonObject MapValues(String content) {
+        JsonParser parser = new JsonParser();
+        JsonObject valueMapper = parser.parse(content).getAsJsonObject();
+        return valueMapper;
     }
 
     public JsonObject ReverseMapValues(JsonObject jsonObject) {
